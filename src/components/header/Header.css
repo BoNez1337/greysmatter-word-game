@@ -1,0 +1,22 @@
+.gm-header {
+    background-color: #898989;
+    height: 100%;
+    padding: 1%;
+    color: #FFFFFF;
+}
+
+.game-title {
+    margin-left: 2%;
+    display: inline;
+}
+
+.gm-logo {
+    max-width: 282.233px;
+    float: left;
+}
+
+@media screen and (max-width: 1024px) {
+    .gm-logo {
+        max-width: 34%;
+    }
+}
