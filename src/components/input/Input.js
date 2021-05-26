@@ -1,7 +1,8 @@
 import React from 'react';
 import './Input.css';
 
-const Input = () => {
+const Input = (props) => {
+    let anagram = props.anagram
     return (
         <div className="gm-input">
             <input type="text" />
