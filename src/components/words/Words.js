@@ -6,24 +6,28 @@ import Input from '../input/Input.js';
 
 let wordsArray = words.words;
 let currentWord = '';
+let currentWordArr = [];
 
 function sortWord(word) {
     return word.split("").sort().join("");
 }
 
 const Words = () => {
-    const [gameStarted, setGameStart] = React.useState(false);
-    const startGame = () => setGameStart(true);
-    const quitGame = () => setGameStart(false);
-
-    const [anagram, setAnagram] = React.useState(getWord());
-    const newWord = () => setAnagram(getWord());
+    let sorted = sortWords();
+    let sortedWordsArray = groupWords(sorted, 'anagram');
+    let [anagram, setAnagram] = React.useState(getWord());
+    let newWord = () => setAnagram(getWord());
+    let [gameStarted, setGameStart] = React.useState(false);
+    let startGame = () => {
+        setGameStart(true);
+    };
+    let quitGame = () => setGameStart(false);
 
 
     function getWord() {
-        console.log('gooo');
-        currentWord = wordsArray[Math.floor(Math.random() * wordsArray.length)]
-        return sortWord(currentWord);
+        currentWordArr = sortedWordsArray[Math.floor(Math.random() * sortedWordsArray.length)];
+        currentWord = currentWordArr[Math.floor(Math.random() * currentWordArr.length)];
+        return currentWord.anagram;
     }
 
     function groupWords(arr, key) {
@@ -42,7 +46,15 @@ const Words = () => {
                 groupedWordsArray.push([arr[i]]);
             }
         }
-        return groupedWordsArray.filter(v => v.length > 1);
+        return groupedWordsArray;
+    }
+
+    function sortWords() {
+        let groups = [];
+        for (let i = 0; i < wordsArray.length; i++) {
+            groups.push({ original: wordsArray[i], anagram: sortWord(wordsArray[i]) });
+        }
+        return groups;
     }
 
     return (
@@ -54,7 +66,7 @@ const Words = () => {
                 { gameStarted ? <button type="button" onClick={quitGame}>Quit</button> : null }
             </div>
             <p>{ gameStarted ? anagram : null }</p>
-            <Input anagram={anagram}/>
+            { gameStarted ? <Input anagram={currentWord} /> : null }
         </div>
     )
 }
