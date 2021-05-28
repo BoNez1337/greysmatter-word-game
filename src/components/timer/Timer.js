@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import './Timer.css';
 
 const Timer = ({ timeLeft, setTimeLeft }) => {
