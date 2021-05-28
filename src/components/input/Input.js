@@ -1,9 +1,17 @@
 import React from 'react';
 import './Input.css';
-import PropTypes from 'prop-types'
 
+function checkWords(guess, wordArr) {
+    let correct = false; 
+    for (let i = 0; i < wordArr.length; i++) {
+        if(guess == wordArr[i].original) {
+            correct = true;
+        }
+    }
+    return correct;
+}
 
-const Input = ({ currentWord }) => {
+const Input = ({ currentWord, currentWordArr, setScore, score, newWord }) => {
     const [answer, setAnswer] = React.useState('')
 
     const submitWord = (e) => {
@@ -11,9 +19,14 @@ const Input = ({ currentWord }) => {
         if (!answer) {
             alert('Please Enter Guess');
         } else {
-            setAnswer('');
+            if (checkWords(answer.toUpperCase(), currentWordArr)) {
+                setScore(score => score + 1);
+                setAnswer('');
+                newWord();
+            } else {
+                alert('Incorrect');
+            }
         }
-        console.log(currentWord);
     }
 
     return (
@@ -24,10 +37,6 @@ const Input = ({ currentWord }) => {
             <input type="submit" value="Enter"/>
         </form>
     )
-}
-
-Input.propTypes = {
-    currentWord: PropTypes.object,
 }
 
 export default Input

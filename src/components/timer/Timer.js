@@ -1,28 +1,16 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import './Timer.css';
-import PropTypes from 'prop-types'
 
-const Timer = ({ started }) => {
-    let [timeLeft, setTimeLeft] = React.useState(120);
-    // let timer = setInterval(countDown(), 1000);
-
-    // function countDown() {
-    //     if (started && timeLeft > 0) {
-    //         setTimeLeft(timeLeft--)
-    //     } else if (timeLeft == 0) {
-    //         alert("Time's Up!!!");
-    //         clearInterval(timer);
-    //     }
-    // }
+const Timer = ({ timeLeft, setTimeLeft }) => {
+    useEffect(() => {
+        timeLeft > 0 && setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      }, [timeLeft]);
 
     return (
         <div className="gm-timer">
-            { started ? <h3>{ timeLeft }</h3> : null }
+            <h3>{ timeLeft > 0 ? timeLeft : 'TIME UP' }</h3>
         </div>
     )
 }
 
-Timer.propTypes = {
-    started: PropTypes.bool
-}
 export default Timer
