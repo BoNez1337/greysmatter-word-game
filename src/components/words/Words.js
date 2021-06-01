@@ -83,14 +83,11 @@ const Words = (props) => {
         } else if (props.score <= 8 && twl > 4) {
             setTwl(--twl);
         }
-        console.log('restart: ' + twl);
         setScoreboard([...scoreboard, [props.score]]);
         startGame();
     }
 
     function getWord() {
-        console.log('getword: ' + twl);
-
         currentWordArr = sortedWordsArray[twl][Math.floor(Math.random() * sortedWordsArray[twl].length)];
         currentWord = currentWordArr[Math.floor(Math.random() * currentWordArr.length)];
         return currentWord.anagram;
