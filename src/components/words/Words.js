@@ -4,6 +4,7 @@ import words from '../../assets/words.js';
 import Timer from '../timer/Timer.js';
 import Input from '../input/Input.js';
 import Score from '../score/Score.js';
+import Scoreboard from '../scoreboard/Scoreboard.js';
 
 let wordsArray = words.words;
 let currentWord = '';
@@ -63,6 +64,7 @@ function sortWords() {
 const Words = (props) => {
     let [timeLeft, setTimeLeft] = useState(120);
     let [anagram, setAnagram] = useState('');
+    let [scoreboard, setScoreboard] = useState([]);
     let [twl, setTwl ] = useState(6);
     let newWord = () => setAnagram(getWord());
     let [gameStarted, setGameStart] = useState(false);
@@ -81,6 +83,7 @@ const Words = (props) => {
         } else if (props.score <= 8) {
             setTwl(twl => twl - 1);
         }
+        setScoreboard([...scoreboard, [props.score]]);
         startGame();
     }
 
@@ -102,6 +105,7 @@ const Words = (props) => {
             <p className="anagram">{ gameStarted ? anagram : null }</p>
             { gameStarted && timeLeft > 0 ? <Input currentWord={currentWord} currentWordArr={currentWordArr} setScore={props.setScore} score={props.score} newWord={newWord} quitGame={quitGame}/> : null }
             { gameStarted ? <Score score={props.score} /> : null }
+            { gameStarted ? <Scoreboard scoreboard={scoreboard} /> : null }
         </div>
     )
 }
