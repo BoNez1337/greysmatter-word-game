@@ -30,12 +30,12 @@ const Input = ({ currentWordArr, setScore, score, newWord }) => {
     }
 
     return (
-        <form className="gm-input" onSubmit={submitWord}>
+        <div className="gm-input">
             <div className="form-control">
                 <input type="text" placeholder="Answer..." value={answer} onChange={(e) => setAnswer(e.target.value)}/>
             </div>
-            <button type="submit">Enter</button>
-        </form>
+            <button type="button" onClick={submitWord}>Enter</button>
+        </div>
     )
 }
 
