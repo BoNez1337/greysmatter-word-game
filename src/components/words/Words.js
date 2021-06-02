@@ -4,6 +4,7 @@ import words from '../../assets/words.js';
 import Input from '../input/Input.js';
 import Score from '../score/Score.js';
 import Scoreboard from '../scoreboard/Scoreboard.js';
+import Timer from '../timer/Timer';
 
 let wordsArray = words.words;
 let currentWord = '';
@@ -64,15 +65,18 @@ const Words = (props) => {
     let [anagram, setAnagram] = useState('');
     let [scoreboard, setScoreboard] = useState([]);
     let [twl, setTwl ] = useState(6);
+    let [gameStarted, setGameStart] = useState(false);
+    let [timerStarted, setTimerStarted] = useState(false);
     const newWord = () => setAnagram(getWord());
     const startGame = () => {
-        props.setTimeLeft(120);
+        // props.setTimeLeft(120);
         props.setScore(0);
-        props.setGameStart(true);
+        setGameStart(true);
+        setTimerStarted(true);
         newWord();
     };
     const quitGame = () => {
-        props.setGameStart(false);
+        setGameStart(false);
     }
     const restartGame = () => {
         if(props.score >= 15 && twl < 9) {
@@ -93,15 +97,16 @@ const Words = (props) => {
     return (
         <div className="gm-words">
             <div className="gm-buttons">
-                { !props.gameStarted ? <button type="button" onClick={startGame}>Start</button> : null }
-                { props.gameStarted && props.timeLeft == 0 ? <button type="button" onClick={restartGame}>Restart</button> : null }
-                { props.gameStarted && props.timeLeft > 0 ? <button type="button" onClick={newWord}>Pass</button> : null }
-                { props.gameStarted ? <button type="button" onClick={quitGame}>Quit</button> : null }
+                { !gameStarted ? <button type="button" onClick={startGame}>Start</button> : null }
+                { gameStarted && !timerStarted ? <button type="button" onClick={restartGame}>Restart</button> : null }
+                { gameStarted && timerStarted ? <button type="button" onClick={newWord}>Pass</button> : null }
+                { gameStarted ? <button type="button" onClick={quitGame}>Quit</button> : null }
             </div>
-            <p className="anagram">{ props.gameStarted ? anagram : null }</p>
-            { props.gameStarted && props.timeLeft > 0 ? <Input currentWord={currentWord} currentWordArr={currentWordArr} setScore={props.setScore} score={props.score} newWord={newWord} quitGame={quitGame}/> : null }
-            { props.gameStarted ? <Score score={props.score} /> : null }
-            { props.gameStarted ? <Scoreboard scoreboard={scoreboard} /> : null }
+            { gameStarted && timerStarted ? <Timer timerStarted={timerStarted} setTimerStarted={setTimerStarted} /> : null }
+            <p className="anagram">{ gameStarted ? anagram : null }</p>
+            { gameStarted && timerStarted ? <Input currentWord={currentWord} currentWordArr={currentWordArr} setScore={props.setScore} score={props.score} newWord={newWord} quitGame={quitGame}/> : null }
+            { gameStarted ? <Score score={props.score} /> : null }
+            { gameStarted ? <Scoreboard scoreboard={scoreboard} /> : null }
         </div>
     )
 }

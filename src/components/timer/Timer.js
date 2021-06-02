@@ -1,9 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './Timer.css';
 
-const Timer = ({ timeLeft, setTimeLeft }) => {
+const Timer = (props) => {
+    let [timeLeft, setTimeLeft] = useState(120);
+
     useEffect(() => {
-        timeLeft > 0 && setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+        if (timeLeft > 0) {
+            setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+        } else {
+            props.setTimerStarted(false);
+        }
       }, [timeLeft]);
 
     return (
