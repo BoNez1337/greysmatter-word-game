@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import './Words.css';
 import words from '../../assets/words.js';
-import Timer from '../timer/Timer.js';
 import Input from '../input/Input.js';
 import Score from '../score/Score.js';
 import Scoreboard from '../scoreboard/Scoreboard.js';
@@ -62,22 +61,20 @@ function sortWords() {
 }
 
 const Words = (props) => {
-    let [timeLeft, setTimeLeft] = useState(120);
     let [anagram, setAnagram] = useState('');
     let [scoreboard, setScoreboard] = useState([]);
     let [twl, setTwl ] = useState(6);
-    let newWord = () => setAnagram(getWord());
-    let [gameStarted, setGameStart] = useState(false);
-    let startGame = () => {
-        setTimeLeft(120);
+    const newWord = () => setAnagram(getWord());
+    const startGame = () => {
+        props.setTimeLeft(120);
         props.setScore(0);
-        setGameStart(true);
+        props.setGameStart(true);
         newWord();
     };
-    let quitGame = () => {
-        setGameStart(false);
+    const quitGame = () => {
+        props.setGameStart(false);
     }
-    let restartGame = () => {
+    const restartGame = () => {
         if(props.score >= 15 && twl < 9) {
             setTwl(++twl);
         } else if (props.score <= 8 && twl > 4) {
@@ -87,7 +84,7 @@ const Words = (props) => {
         startGame();
     }
 
-    function getWord() {
+    const getWord = () => {
         currentWordArr = sortedWordsArray[twl][Math.floor(Math.random() * sortedWordsArray[twl].length)];
         currentWord = currentWordArr[Math.floor(Math.random() * currentWordArr.length)];
         return currentWord.anagram;
@@ -95,17 +92,16 @@ const Words = (props) => {
 
     return (
         <div className="gm-words">
-            { gameStarted ? <Timer started={gameStarted} timeLeft={timeLeft} setTimeLeft={setTimeLeft} /> : null }
             <div className="gm-buttons">
-                { !gameStarted ? <button type="button" onClick={startGame}>Start</button> : null }
-                { gameStarted && timeLeft == 0 ? <button type="button" onClick={restartGame}>Restart</button> : null }
-                { gameStarted && timeLeft > 0 ? <button type="button" onClick={newWord}>Pass</button> : null }
-                { gameStarted ? <button type="button" onClick={quitGame}>Quit</button> : null }
+                { !props.gameStarted ? <button type="button" onClick={startGame}>Start</button> : null }
+                { props.gameStarted && props.timeLeft == 0 ? <button type="button" onClick={restartGame}>Restart</button> : null }
+                { props.gameStarted && props.timeLeft > 0 ? <button type="button" onClick={newWord}>Pass</button> : null }
+                { props.gameStarted ? <button type="button" onClick={quitGame}>Quit</button> : null }
             </div>
-            <p className="anagram">{ gameStarted ? anagram : null }</p>
-            { gameStarted && timeLeft > 0 ? <Input currentWord={currentWord} currentWordArr={currentWordArr} setScore={props.setScore} score={props.score} newWord={newWord} quitGame={quitGame}/> : null }
-            { gameStarted ? <Score score={props.score} /> : null }
-            { gameStarted ? <Scoreboard scoreboard={scoreboard} /> : null }
+            <p className="anagram">{ props.gameStarted ? anagram : null }</p>
+            { props.gameStarted && props.timeLeft > 0 ? <Input currentWord={currentWord} currentWordArr={currentWordArr} setScore={props.setScore} score={props.score} newWord={newWord} quitGame={quitGame}/> : null }
+            { props.gameStarted ? <Score score={props.score} /> : null }
+            { props.gameStarted ? <Scoreboard scoreboard={scoreboard} /> : null }
         </div>
     )
 }

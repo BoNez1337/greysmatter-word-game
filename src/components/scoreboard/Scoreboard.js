@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import './Scoreboard.css';
 
 const Scoreboard = ({ scoreboard }) => {
